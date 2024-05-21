@@ -8,10 +8,10 @@ const NavBar = () => {
             <Link href="/"><FcTodoList /></Link>
             <ul className='flex space-x-6'>
                 <li>
-                    <Link href="/">Dashboard</Link>
+                    <Link className='text-blue-500 hover:text-blue-800 transition-colors' href="/">Dashboard</Link>
                 </li>
                 <li>
-                    <Link href="/toDos">To-do-list</Link>
+                    <Link className='text-blue-500 hover:text-blue-800 transition-colors' href="/toDos">To-do-list</Link>
                 </li>
             </ul>
         </nav>
