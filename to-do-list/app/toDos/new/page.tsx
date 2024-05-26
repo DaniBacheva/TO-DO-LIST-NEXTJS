@@ -1,22 +1,24 @@
 'use client';
 
-import { Button, Callout, TextField } from '@radix-ui/themes'
+import { Button, Callout, Text, TextField } from '@radix-ui/themes'
 import SimpleMDE from "react-simplemde-editor";
 import { useForm, Controller } from 'react-hook-form';
 import axios from 'axios';
 import "easymde/dist/easymde.min.css";
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { createTodoSchema } from '@/app/validationSchema';
+import { z } from 'zod';
 
-interface ToDoForm {
-  title: string;
-  description: string
-}
+type ToDoForm = z.infer<typeof createTodoSchema>;
 
 const NewTodoPage = () => {
   const router = useRouter();
 
-  const { register, control, handleSubmit } = useForm<ToDoForm>();
+  const { register, control, handleSubmit, formState: { errors } } = useForm<ToDoForm>({
+    resolver: zodResolver(createTodoSchema)
+  });
   // console.log(register('title'))
 
   const [error, setError] = useState('');
@@ -37,13 +39,13 @@ const NewTodoPage = () => {
           }
         })}>
         <TextField.Root placeholder='Title' {...register('title')} />
-
+        {errors.title && <Text color='red' as="p">{errors.title.message}</Text>}
         <Controller
           name="description"
           control={control}
           render={({ field }) => <SimpleMDE placeholder="Description" {...field} />}
         />
-
+        {errors.description && <Text color='red' as="p">{errors.description.message}</Text>}
         <Button>Submit New Issue</Button>
       </form>
     </div>
